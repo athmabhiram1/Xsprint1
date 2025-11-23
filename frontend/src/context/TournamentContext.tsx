@@ -1,4 +1,4 @@
-import React, { useState, createContext, ReactNode, useEffect } from 'react';
+import React, { useState, createContext, ReactNode } from 'react';
 import { apiClient } from '../api/client';
 
 // --- Configuration & Constants ---
@@ -142,7 +142,7 @@ export const TournamentProvider = ({ children }: { children: ReactNode }) => {
 
     const login = async (email: string, password: string = 'password') => {
         try {
-            const response = await apiClient.login(email, password);
+            const response: any = await apiClient.login(email, password);
             
             // Backend returns { message, user } directly
             if (response.user) {
@@ -223,6 +223,10 @@ export const TournamentProvider = ({ children }: { children: ReactNode }) => {
         ];
 
         addActivity('Mock fixtures and schedule loaded', 'system');
+        // Mock data available for future use
+        if (mockFixtures.length > 0 && mockSchedule.length > 0) {
+            console.log('Mock data ready');
+        }
     };
 
     const logout = () => {

@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import { Zap, Activity, Medal, Users, GitBranch, Grid3x3, Shuffle, Trophy, Loader2 } from 'lucide-react';
 import { TournamentContext, COURTS, generateId, generateMatchCode } from '../context/TournamentContext';
-import { apiClient } from '../api/client';
 
 const TOURNAMENT_FORMATS = [
     { id: 'knockout', name: 'Knockout', icon: Trophy, description: 'Single elimination bracket' },
