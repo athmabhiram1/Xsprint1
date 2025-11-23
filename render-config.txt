@@ -1,0 +1,15 @@
+# Render Deployment Configuration
+# This file tells Render how to build and deploy your backend
+
+# Build Command (run in Render dashboard):
+# npm install && npx prisma migrate deploy && npm run build
+
+# Start Command (run in Render dashboard):
+# npm start
+
+# Environment Variables (add in Render dashboard):
+# DATABASE_URL=your_neon_database_url
+# JWT_SECRET=your_jwt_secret
+# ADMIN_BOOTSTRAP_CODE=AthmaAdminInit5321
+# NODE_ENV=production
+# (see .env.example for all variables)
