@@ -40,7 +40,9 @@
     "node-cache": "^5.1.2",
     "node-fetch": "^2.7.0",
     "pg": "^8.11.3",
+    "prisma": "^6.19.0",
     "socket.io": "^4.8.1",
+    "typescript": "^5.3.3",
     "winston": "^3.18.3",
     "zod": "^4.1.12"
   },
@@ -55,10 +57,8 @@
     "@types/node-fetch": "^2.6.13",
     "@types/pg": "^8.10.9",
     "@vitest/coverage-v8": "^1.0.0",
-    "prisma": "^6.19.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.3.3",
     "vitest": "^1.0.0"
   }
 }
