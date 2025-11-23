@@ -111,15 +111,15 @@
 
 - Node.js >= 18.0.0
 - npm >= 9.0.0
-- PostgreSQL >= 14.0
+- PostgreSQL 14+ (NeonDB recommended for cloud)
 - Git
 
-### Installation
+### Installation & Setup
 
 **1. Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/xsprint-backend.git
-cd xsprint-backend
+git clone https://github.com/athmabhiram1/Xsprint1.git
+cd Xsprint1
 ```
 
 **2. Install dependencies:**
@@ -129,63 +129,174 @@ npm install
 
 **3. Set up environment variables:**
 
-Create a `.env` file:
+Create a `.env` file in the root directory:
 ```bash
+# On Windows (PowerShell)
+copy .env.example .env
+
+# On Mac/Linux
 cp .env.example .env
 ```
 
 Edit `.env` with your configuration:
 ```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/xsprint?schema=public"
+# Database (NeonDB PostgreSQL)
+DATABASE_URL="postgresql://user:password@host.region.neon.tech/xsprint?sslmode=require"
+DIRECT_URL="postgresql://user:password@host.region.neon.tech/xsprint?sslmode=require"
 
 # Authentication
-JWT_SECRET="your-super-secret-jwt-key-min-32-characters"
-JWT_EXPIRES_IN="1d"
+JWT_SECRET="8f32a0b9c2b445df8ca92781f33ac86f7c1f55b4976a991efb9dc7e4ca91b8da"
+JWT_EXPIRES_IN="7d"
 
 # Admin Bootstrap
-ADMIN_BOOTSTRAP_CODE="your-secret-admin-code"
+ADMIN_BOOTSTRAP_CODE="AthmaAdminInit5321"
 ALLOW_MULTIPLE_ADMINS="false"
 
 # Server
 NODE_ENV="development"
-PORT=5000
+PORT=5001
 
 # Frontend (for CORS)
-FRONTEND_URL="http://localhost:3000"
+FRONTEND_URL="http://localhost:3001"
+ALLOWED_ORIGINS="http://localhost:3001,http://localhost:5173"
 ```
 
 **4. Set up database:**
 ```bash
 # Generate Prisma Client
-npm run db:generate
+npx prisma generate
 
-# Run migrations
-npm run db:migrate
+# Run migrations to create database tables
+npx prisma migrate deploy
 
 # (Optional) Seed sample data
 npm run db:seed
 ```
 
 **5. Create admin user:**
+
+The first user to register with the admin bootstrap code becomes an admin:
+- Email: `admin@test.com`
+- Password: `Admin123!`
+- Admin Code: `AthmaAdminInit5321`
+
+Or run the bootstrap script:
 ```bash
 npm run bootstrap
 ```
 
-**6. Start development server:**
+**6. Start the backend server:**
 ```bash
+# Development mode (with hot reload)
+npm run dev
+
+# Production mode
+npm run build
+npm start
+```
+
+The backend server will start at `http://localhost:5001`
+
+**7. Start the frontend (optional):**
+
+If you want to run the complete application:
+```bash
+# Open a new terminal
+cd frontend
+
+# Install frontend dependencies
+npm install
+
+# Start frontend dev server
 npm run dev
 ```
 
-The server will start at `http://localhost:5000`
+The frontend will start at `http://localhost:3001`
 
-**7. Verify installation:**
+**8. Verify installation:**
 
-Visit `http://localhost:5000/api/health` - you should see:
+Test the backend health endpoint:
+```bash
+# Using browser
+http://localhost:5001/api/health
+
+# Using curl (Mac/Linux)
+curl http://localhost:5001/api/health
+
+# Using PowerShell (Windows)
+Invoke-WebRequest http://localhost:5001/api/health
+```
+
+Expected response:
 ```json
 {
-  "status": "ok"
+  "status": "healthy",
+  "timestamp": "2025-11-24T10:30:00.000Z",
+  "uptime": 123.456
 }
+```
+
+### Running Both Backend and Frontend Together
+
+**Option 1: Separate Terminals**
+```bash
+# Terminal 1 - Backend
+cd backend
+npm run dev
+
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+```
+
+**Option 2: Using npm scripts from root**
+```bash
+# Install frontend dependencies
+npm run frontend:install
+
+# Run frontend dev server
+npm run frontend:dev
+
+# Build frontend for production
+npm run frontend:build
+```
+
+### First-Time Login
+
+1. Open frontend at `http://localhost:3001`
+2. Click "Register" or go to `/register`
+3. Fill in:
+   - Name: `Admin User`
+   - Email: `admin@test.com`
+   - Password: `Admin123!`
+   - Admin Code: `AthmaAdminInit5321`
+4. Click "Register" - you're now an admin!
+
+### Common Issues & Solutions
+
+**Database Connection Failed:**
+- Ensure DATABASE_URL is correct in `.env`
+- Check if NeonDB is accessible
+- Verify SSL mode is set to `require`
+
+**Port Already in Use:**
+```bash
+# Change PORT in .env file
+PORT=5002  # or any available port
+```
+
+**Prisma Client Not Generated:**
+```bash
+npx prisma generate
+```
+
+**Migration Errors:**
+```bash
+# Reset database (⚠️ deletes all data)
+npx prisma migrate reset
+
+# Or push schema without migrations
+npx prisma db push
 ```
 
 ---
@@ -306,26 +417,172 @@ socket.on('LEADERBOARD_UPDATED', (data) => {
 
 ## 🚀 Deployment
 
-### Deploy to Render (Recommended)
+### Prerequisites for Deployment
 
-**Quick Deploy:**
-1. Push to GitHub
-2. Go to [Render Dashboard](https://render.com/dashboard)
-3. Click "New" → "Blueprint"
-4. Connect your repository
-5. Add `FRONTEND_URL` and `ADMIN_BOOTSTRAP_CODE` environment variables
+- GitHub account with your code pushed
+- NeonDB PostgreSQL database (free tier available)
+- Render or Vercel account (both have free tiers)
 
-📖 **Full Guide**: [`RENDER_DEPLOYMENT.md`](RENDER_DEPLOYMENT.md)
+### Environment Variables for Production
 
-### Deploy to Vercel
+Create these in your deployment platform:
 
-**Quick Deploy:**
-```bash
-npm install -g vercel
-vercel --prod
+```env
+# Database
+DATABASE_URL="postgresql://user:password@host.neon.tech/xsprint?sslmode=require"
+DIRECT_URL="postgresql://user:password@host.neon.tech/xsprint?sslmode=require"
+
+# Authentication
+JWT_SECRET="8f32a0b9c2b445df8ca92781f33ac86f7c1f55b4976a991efb9dc7e4ca91b8da"
+JWT_EXPIRES_IN="7d"
+
+# Admin
+ADMIN_BOOTSTRAP_CODE="AthmaAdminInit5321"
+ALLOW_MULTIPLE_ADMINS="false"
+
+# Server
+NODE_ENV="production"
+PORT=5001
+
+# Frontend (update after frontend deployment)
+FRONTEND_URL="https://your-frontend.vercel.app"
+ALLOWED_ORIGINS="https://your-frontend.vercel.app"
 ```
 
-📖 **Full Guide**: [`VERCEL_DEPLOYMENT.md`](VERCEL_DEPLOYMENT.md)
+### Deploy Backend to Render
+
+**Step 1: Create Web Service**
+1. Go to [Render Dashboard](https://dashboard.render.com/)
+2. Click **"New +"** → **"Web Service"**
+3. Connect your GitHub repository: `athmabhiram1/Xsprint1`
+4. Configure:
+   - Name: `xsprint-backend`
+   - Region: `Singapore` (or closest to you)
+   - Branch: `main`
+   - Root Directory: `.` (leave empty)
+   - Runtime: `Node`
+   - Build Command: `npm install && npx prisma generate && npx prisma migrate deploy && npm run build`
+   - Start Command: `npm start`
+
+**Step 2: Add Environment Variables**
+
+In Render dashboard → Environment tab, add all variables from above.
+
+**Step 3: Deploy**
+
+Click **"Create Web Service"** - Render will automatically deploy.
+
+Your backend URL will be: `https://xsprint-backend.onrender.com`
+
+### Deploy Frontend to Vercel
+
+**Step 1: Update Frontend Environment**
+
+Create `frontend/.env.production`:
+```env
+VITE_API_URL=https://xsprint-backend.onrender.com
+VITE_WS_URL=wss://xsprint-backend.onrender.com
+```
+
+**Step 2: Deploy**
+```bash
+cd frontend
+npx vercel --prod
+```
+
+Or connect via Vercel dashboard:
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Click **"Add New"** → **"Project"**
+3. Import `athmabhiram1/Xsprint1`
+4. Configure:
+   - Framework Preset: `Vite`
+   - Root Directory: `frontend`
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+5. Add environment variables from above
+6. Click **"Deploy"**
+
+**Step 3: Update Backend CORS**
+
+After frontend deployment, update Render environment variables:
+```env
+FRONTEND_URL=https://your-app.vercel.app
+ALLOWED_ORIGINS=https://your-app.vercel.app
+```
+
+### Post-Deployment Steps
+
+**1. Run Database Migrations**
+
+Render automatically runs migrations during build. To manually trigger:
+```bash
+# In Render dashboard → Shell tab
+npx prisma migrate deploy
+```
+
+**2. Create Admin User**
+
+Option A: Use the frontend registration with admin code
+- Go to your frontend URL
+- Register with email, password, and admin code: `AthmaAdminInit5321`
+
+Option B: Use Render Shell
+```bash
+# In Render dashboard → Shell tab
+npm run bootstrap
+```
+
+**3. Test Deployment**
+
+Backend health check:
+```
+https://xsprint-backend.onrender.com/api/health
+```
+
+Expected response:
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-11-24T10:30:00.000Z",
+  "uptime": 123.456
+}
+```
+
+### Monitoring & Logs
+
+**Render:**
+- View logs: Dashboard → Logs tab
+- Monitor metrics: Dashboard → Metrics tab
+- Database connections shown in real-time
+
+**Vercel:**
+- View deployment logs: Project → Deployments → Click on deployment
+- Monitor performance: Project → Analytics
+
+### Troubleshooting Deployment
+
+**Render Build Fails:**
+- Check build logs for errors
+- Verify all environment variables are set
+- Ensure `DATABASE_URL` is accessible
+
+**Database Connection Errors:**
+- Use pooled connection string from NeonDB
+- Ensure SSL mode is `require`
+- Check Neon database is not paused (free tier sleeps after inactivity)
+
+**CORS Errors After Deployment:**
+- Update `FRONTEND_URL` in Render environment variables
+- Redeploy backend after updating
+
+**Frontend Can't Connect to Backend:**
+- Verify `VITE_API_URL` in frontend `.env.production`
+- Check backend is deployed and healthy
+- Ensure no typos in URLs
+
+📖 **Detailed Guides:**
+- Backend: [`DEPLOY-BACKEND.md`](DEPLOY-BACKEND.md)
+- Full Deployment: [`DEPLOYMENT.md`](DEPLOYMENT.md)
 
 ---
 
