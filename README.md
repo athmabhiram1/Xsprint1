@@ -23,14 +23,7 @@ A modern full-stack tournament management platform for organizing, scheduling, a
 
 🌐 Live Deployment
 
-<<<<<<< HEAD
-**Frontend:** https://frontend-lwno2jwc1-athmabhiram-gmailcoms-projects.vercel.app  
-**Backend:** https://xsprint1-1b.onrender.com  
-**Backend Health:** https://xsprint1-1b.onrender.com/api/health
-=======
-Frontend:
-🔗 https://frontend-lwno2jwc1-athmabhiram-gmailcoms-projects.vercel.app/
->>>>>>> 6dc02f6747aca4d65ea56a3f1cbc949fc6b4d63d
+https://xsprint1f2.vercel.app/
 
 🚀 Features
 
