@@ -99,32 +99,40 @@ cp .env.example .env.local
 npm run dev
 
 🌐 Deployment Guide
+
 Frontend — Vercel
+1. Connect GitHub repo
+2. Add env var: `VITE_API_URL=https://<backend-domain>/api`
+3. Deploy
 
-Connect GitHub repo
+Backend — Railway (Recommended Simplicity)
+1. Create a new service: "Deploy from GitHub" and select the repo root.
+2. When prompted for a build, Railway auto-detects Node; choose Docker if you want deterministic builds (Dockerfile provided in `backend/`).
+3. Add Environment Variables (Settings → Variables):
+```
+DATABASE_URL=<neon pooled url>
+DIRECT_URL=<neon direct url>
+JWT_SECRET=<secure 64+ hex>
+ADMIN_BOOTSTRAP_CODE=<secure admin code>
+JWT_EXPIRES_IN=7d
+GEMINI_API_KEY=<optional>
+ALLOWED_ORIGINS=https://<frontend-domain>,https://<backend-domain>
+FRONTEND_URL=https://<frontend-domain>
+PORT=5000   # Railway will also inject PORT; this is a fallback
+NODE_ENV=production
+```
+4. Enable "Deploy on Push".
+5. First deployment runs `prisma generate` during build; container start runs migrations via `npm run start:migrate`.
+6. Verify health: `curl https://<backend-domain>/api/health` → should return JSON with status UP.
 
-Set env variable:
+Backend — Alternative (Render / VPS)
+1. Install Node 18+
+2. `npm install && npm run build`
+3. `npx prisma migrate deploy`
+4. `npm run start:migrate`
 
-VITE_API_URL=https://your-backend-url
-
-
-Deploy
-
-Backend — Render / Railway / VPS
-
-Add all env variables from .env.example
-
-Run Prisma migrations:
-
-npx prisma migrate deploy
-
-
-Start server
-
-Update frontend .env.local with backend URL
-
-For full deployment instructions:
-📄 DEPLOYMENT-CHECKLIST.md
+For full deployment & security checklist:
+📄 `DEPLOYMENT-CHECKLIST.md`
 
 🧭 Roadmap (Planned Features)
 
