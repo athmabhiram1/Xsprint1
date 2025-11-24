@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const LeaderboardController_1 = require("../controllers/LeaderboardController");
+const auth_1 = require("../middlewares/auth");
+const client_1 = require("@prisma/client");
+const router = (0, express_1.Router)();
+router.get('/events/:id/leaderboard/basic', LeaderboardController_1.getBasicLeaderboard);
+router.get('/events/:id/leaderboard/detailed', auth_1.requireAuth, (0, auth_1.requireRole)(client_1.Role.ADMIN, client_1.Role.ORGANIZER), LeaderboardController_1.getDetailedLeaderboard);
+router.get('/events/:id/standings', LeaderboardController_1.getBasicLeaderboard);
+exports.default = router;
