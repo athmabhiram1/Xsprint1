@@ -1,73 +1,159 @@
-# xSPRINT Tournament Management System
+xSPRINT — Tournament Management System
 
-A full-stack tournament management application for organizing and managing sports tournaments with real-time updates, live scoring, and comprehensive analytics.
 
-## 🚀 Features
 
-- **Player Registration** - Easy athlete onboarding with multi-sport support
-- **Automated Fixture Generation** - Multiple tournament formats (Knockout, Round Robin, Swiss, etc.)
-- **Live Scoring** - Real-time match score updates with umpire interface  
-- **Leaderboards & Analytics** - Track performance and standings
-- **Multi-Sport Support** - Tennis, Badminton, Table Tennis, Squash, and more
-- **Real-time Updates** - WebSocket integration for live data
-- **Secure Authentication** - JWT-based auth with role-based access
-- **Production Ready** - Deployment configs for Vercel
 
-## 📁 Project Structure
 
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A modern full-stack tournament management platform for organizing, scheduling, and tracking sports tournaments with real-time updates, automated fixtures, live scoring, and analytics.
+
+🌐 Live Deployment
+
+Frontend:
+🔗 https://xsprint1f2.vercel.app/
+
+🚀 Features
+
+Player Registration — Smooth onboarding for multi-sport tournaments
+
+Automated Fixture Generation — Knockout, Round Robin, Swiss, League formats
+
+Live Scoring System — Real-time umpire scoring + instant updates
+
+Live Leaderboards — Auto-updating rankings and stats
+
+Multi-Sport Support — Tennis, Badminton, Table Tennis, Squash, Pickleball & more
+
+Real-Time Sync — Powered by Socket.IO
+
+Role-Based Access — Admin, Umpire, and Player modes
+
+Secure Authentication — JWT + refresh tokens
+
+Optimized for Production — Vercel frontend + Neon DB + Prisma ORM
+
+📁 Project Structure
 xsprint1/
-├── backend/          # Node.js/Express/TypeScript API
-├── frontend/         # React/TypeScript/Vite SPA
-└── README.md         # This file
-```
+├── backend/           # Node.js / Express / TypeScript API
+├── frontend/          # React / TypeScript / Vite SPA
+└── README.md
 
-## 🛠️ Technology Stack
+🛠️ Tech Stack
+Backend
 
-### Backend
-- Node.js + Express + TypeScript
-- PostgreSQL (Neon) + Prisma ORM
-- JWT Authentication + Socket.IO
-- Zod Validation
+Node.js + Express
 
-### Frontend
-- React 18 + Vite + TypeScript
-- Tailwind CSS
-- React Context + Fetch API
+TypeScript
 
-## 🚦 Quick Start
+Prisma ORM
 
-### Backend
-```bash
+PostgreSQL (Neon)
+
+Socket.IO
+
+Zod schema validation
+
+JWT Authentication
+
+Frontend
+
+React 18
+
+Vite + TypeScript
+
+Tailwind CSS
+
+React Context API
+
+REST + Realtime WebSocket updates
+
+🚦 Quick Start (Local Development)
+Backend Setup
 cd backend
 npm install
 cp .env.example .env
-# Edit .env with your credentials
-npx prisma generate && npx prisma migrate deploy
+# Add DB + JWT credentials
+npx prisma generate
+npx prisma migrate deploy
 npm run dev
-```
 
-### Frontend
-```bash
+Frontend Setup
 cd frontend
 npm install  
 cp .env.example .env.local
-# Edit .env.local with backend URL
+# Set VITE_API_URL to your backend URL
 npm run dev
-```
 
-## 🌐 Deployment
+🌐 Deployment Guide
+Frontend — Vercel
 
-See `DEPLOYMENT-CHECKLIST.md` for complete deployment instructions.
+Connect GitHub repo
 
-## 📄 License
+Set env variable:
 
-MIT License
+VITE_API_URL=https://your-backend-url
 
-## 👥 Author
 
-**Athma Bhiram** - [athmabhiram1](https://github.com/athmabhiram1)
+Deploy
 
----
+Backend — Render / Railway / VPS
 
-**Repository:** https://github.com/athmabhiram1/Xsprint1
+Add all env variables from .env.example
+
+Run Prisma migrations:
+
+npx prisma migrate deploy
+
+
+Start server
+
+Update frontend .env.local with backend URL
+
+For full deployment instructions:
+📄 DEPLOYMENT-CHECKLIST.md
+
+🧭 Roadmap (Planned Features)
+
+Mobile App (React Native)
+
+AI-based match predictions
+
+Automatic scheduling conflict resolver
+
+Team-based tournaments
+
+Tournament highlights dashboard
+## Images 
+<img width="1899" height="918" alt="image" src="https://github.com/user-attachments/assets/40acbcf1-8292-4203-b619-ac0a987fa59e" />
+
+<img width="1902" height="925" alt="image" src="https://github.com/user-attachments/assets/32831418-d3ff-4045-8ac5-f14a857852d1" />
+
+<img width="1919" height="923" alt="image" src="https://github.com/user-attachments/assets/a60e5b0f-f76d-4ba8-aa84-d54d17b3e64e" />
+
+<img width="1919" height="920" alt="image" src="https://github.com/user-attachments/assets/5c51a53c-9b13-4d4c-8aae-f0499e869ff6" />
+
+<img width="1919" height="922" alt="image" src="https://github.com/user-attachments/assets/b0cc3f3b-6453-44a0-8457-3284b7de545a" />
+
+
+📄 License
+
+This project is licensed under the MIT License.
+
+👤 Author
+
+Athmabhiram
+GitHub: athmabhiram1
