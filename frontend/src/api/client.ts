@@ -1,5 +1,9 @@
 // API Client for xSPRINT Backend
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+// Normalize base URL: accept value with or without trailing /api and ensure single /api prefix
+const RAW_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+const API_BASE_URL = RAW_BASE.endsWith('/api')
+    ? RAW_BASE.replace(/\/+$/, '')
+    : `${RAW_BASE.replace(/\/+$/, '')}/api`;
 
 interface ApiResponse<T = any> {
     success: boolean;

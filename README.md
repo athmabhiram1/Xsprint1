@@ -105,33 +105,51 @@ Frontend — Vercel
 2. Add env var: `VITE_API_URL=https://<backend-domain>/api`
 3. Deploy
 
-Backend — Railway (Recommended Simplicity)
-1. Create a new service: "Deploy from GitHub" and select the repo root.
-2. When prompted for a build, Railway auto-detects Node; choose Docker if you want deterministic builds (Dockerfile provided in `backend/`).
-3. Add Environment Variables (Settings → Variables):
+Backend — Render (Managed Node Environment)
+Backend — Railway (Container or Buildpack)
+1. Select repository; set root directory to `backend/`.
+2. If using buildpack: Build Command `npm install && npm run build` Start Command `npm run start:migrate`.
+3. If using Docker: create a `Dockerfile` (see commits history for example) then just deploy; Railway sets `PORT`.
+4. Add env vars from `.env.example` (ensure `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `ADMIN_BOOTSTRAP_CODE`).
+5. Trigger deploy; first start applies migrations then launches server.
+6. Test: `curl https://<railway-domain>/api/health`.
+
+1. Create new Web Service pointing to `backend/` directory (choose Root Directory = backend).
+2. Set Build Command:
+```
+npm install && npm run build
+```
+3. Set Start Command (runs migrations then starts API):
+```
+npx prisma migrate deploy && node dist/index.js
+```
+4. Add Environment Variables:
 ```
 DATABASE_URL=<neon pooled url>
 DIRECT_URL=<neon direct url>
-JWT_SECRET=<secure 64+ hex>
-ADMIN_BOOTSTRAP_CODE=<secure admin code>
+JWT_SECRET=<secure long random secret>
+ADMIN_BOOTSTRAP_CODE=<admin bootstrap code>
 JWT_EXPIRES_IN=7d
 GEMINI_API_KEY=<optional>
-ALLOWED_ORIGINS=https://<frontend-domain>,https://<backend-domain>
+ALLOWED_ORIGINS=https://<frontend-domain>,https://<render-service-host>
 FRONTEND_URL=https://<frontend-domain>
-PORT=5000   # Railway will also inject PORT; this is a fallback
 NODE_ENV=production
+PORT=10000   # Render provides PORT automatically; fallback only
 ```
-4. Enable "Deploy on Push".
-5. First deployment runs `prisma generate` during build; container start runs migrations via `npm run start:migrate`.
-6. Verify health: `curl https://<backend-domain>/api/health` → should return JSON with status UP.
+5. Enable Auto-Deploy on commit.
+6. Verify health:
+```
+curl https://<render-service-host>/api/health
+```
+Should return JSON with `status: UP`.
 
-Backend — Alternative (Render / VPS)
-1. Install Node 18+
+Backend — VPS (Manual)
+1. Install Node 18+ & PostgreSQL client.
 2. `npm install && npm run build`
 3. `npx prisma migrate deploy`
-4. `npm run start:migrate`
+4. `node dist/index.js`
 
-For full deployment & security checklist:
+For full deployment & security checklist see:
 📄 `DEPLOYMENT-CHECKLIST.md`
 
 🧭 Roadmap (Planned Features)
