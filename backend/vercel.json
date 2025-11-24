@@ -2,29 +2,10 @@
   "version": 2,
   "buildCommand": "npm run vercel-build",
   "installCommand": "npm install",
-  "framework": null,
-  "outputDirectory": "dist",
-  "builds": [
-    {
-      "src": "dist/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
-    }
-  ],
   "rewrites": [
     {
-      "source": "/api/health",
-      "destination": "/dist/index.js"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/dist/index.js"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/dist/index.js"
+      "destination": "/api/index.ts"
     }
   ],
   "headers": [
@@ -37,7 +18,7 @@
         },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "*"
+          "value": "https://xsprint1f2.vercel.app"
         },
         {
           "key": "Access-Control-Allow-Methods",
@@ -49,8 +30,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
