@@ -43,127 +43,194 @@ Role-Based Access — Admin, Umpire, and Player modes
 
 Secure Authentication — JWT + refresh tokens
 
-Optimized for Production — Vercel frontend + Neon DB + Prisma ORM
+# xSPRINT — Tournament Management System
 
-📁 Project Structure
+A modern full-stack tournament management platform for organizing, scheduling, and tracking sports tournaments. The system provides real-time updates, automated fixture generation, live scoring, analytics and role-based access control.
+
+---
+
+## Live (production)
+
+- Frontend: https://xsprint1f2.vercel.app/
+- Backend: https://xsprint1-1b.onrender.com
+- Backend health: https://xsprint1-1b.onrender.com/api/health
+
+---
+
+## Table of contents
+
+- Overview
+- Features
+- Tech stack
+- Project layout
+- Local development
+- Configuration (env variables)
+- Database & migrations
+- API overview
+- Testing & utilities
+- Contributing
+- License
+
+---
+
+## Overview
+
+xsprint is built for tournament organizers who need a web-based console to manage players, fixtures, schedules, and live scoring. It supports multiple tournament formats and delivers live updates via WebSockets (Socket.IO).
+
+---
+
+## Key features
+
+- Multi-role authentication (Admin, Organizer, Viewer)
+- JWT authentication with httpOnly cookie support
+- Player, Club and Tournament CRUD
+- Automated fixture generation (Round robin, Knockout, Swiss-like patterns)
+- Match scheduling, rescheduling and withdrawals
+- Live scoring and real-time leaderboards using Socket.IO
+- Admin bootstrap flow to create the first admin
+- Rate-limited auth endpoints for protection against brute force
+
+---
+
+## Tech stack
+
+- Backend: Node.js, Express, TypeScript
+- ORM: Prisma (Type-safe DB client)
+- DB: PostgreSQL (Neon recommended)
+- Real-time: Socket.IO
+- Frontend: React + Vite + TypeScript + Tailwind CSS
+
+---
+
+## Project layout
+
+```
 xsprint1/
-├── backend/           # Node.js / Express / TypeScript API
-├── frontend/          # React / TypeScript / Vite SPA
+├── backend/           # Express API (TypeScript)
+│   ├── src/
+│   ├── prisma/
+│   └── package.json
+├── frontend/          # React + Vite SPA
+│   ├── src/
+│   └── package.json
 └── README.md
+```
 
-🛠️ Tech Stack
-Backend
+---
 
-Node.js + Express
+## Local development
 
-TypeScript
+Prerequisites: Node.js 18+, pnpm/npm/yarn, PostgreSQL (or a Neon DB connection)
 
-Prisma ORM
+Backend (development):
 
-PostgreSQL (Neon)
-
-Socket.IO
-
-Zod schema validation
-
-JWT Authentication
-
-Frontend
-
-React 18
-
-Vite + TypeScript
-
-Tailwind CSS
-
-React Context API
-
-REST + Realtime WebSocket updates
-
-🚦 Quick Start (Local Development)
-Backend Setup
+```bash
 cd backend
 npm install
 cp .env.example .env
-# Add DB + JWT credentials
+# Edit .env and fill DATABASE_URL, JWT_SECRET and other variables
 npx prisma generate
-npx prisma migrate deploy
+npx prisma migrate dev
 npm run dev
+```
 
-Frontend Setup
+Frontend (development):
+
+```bash
 cd frontend
-npm install  
+npm install
 cp .env.example .env.local
-# Set VITE_API_URL to your backend URL
+# Set VITE_API_URL to your backend (e.g. http://localhost:5001)
 npm run dev
+```
 
-🌐 Deployment Guide
+Notes:
 
-### Frontend — Vercel
-1. Connect GitHub repo
-2. Add environment variable:
-   ```
-   VITE_API_URL=https://xsprint1-1b.onrender.com
-   ```
-3. Deploy
+- `npm run dev` in backend runs the ts-node/ts-node-dev server configured for local development.
+- Frontend picks up `VITE_API_URL` at build time. In development, a `.env.local` with `VITE_API_URL` pointing to your backend is recommended.
 
-### Backend — Render (Production)
-**Current deployment:** https://xsprint1-1b.onrender.com
+---
 
-1. Create new Web Service pointing to `backend/` directory
-2. **Build Command:**
-   ```bash
-   cd backend && npm install && npm run build
-   ```
-3. **Start Command:**
-   ```bash
-   cd backend && npx prisma migrate deploy && node dist/index.js
-   ```
-4. **Environment Variables:** (copy from `backend/.env`)
-   ```
-   DATABASE_URL=<neon pooled connection>
-   DIRECT_URL=<neon direct connection>
-   JWT_SECRET=<your secret>
-   JWT_EXPIRES_IN=7d
-   ADMIN_BOOTSTRAP_CODE=<your code>
-   ALLOW_MULTIPLE_ADMINS=false
-   BCRYPT_SALT_ROUNDS=10
-   NODE_ENV=production
-   FRONTEND_URL=<your-frontend-url>
-   ALLOWED_ORIGINS=<your-frontend-url>,http://localhost:3000,http://localhost:3001
-   GEMINI_API_KEY=<optional>
-   ```
-5. Enable Auto-Deploy on git push
-6. Verify: `curl https://xsprint1-1b.onrender.com/api/health`
+## Configuration (environment variables)
 
-🧭 Roadmap (Planned Features)
+Keep secrets out of git. Copy `backend/.env.example` and `frontend/.env.example` and provide values.
 
-Mobile App (React Native)
+Important backend variables (examples):
 
-AI-based match predictions
+- `DATABASE_URL` — Neon/Postgres connection string (pooled)  
+- `DIRECT_URL` — direct DB connection (used for migrations)  
+- `JWT_SECRET` — long random string  
+- `ADMIN_BOOTSTRAP_CODE` — code to create the initial admin  
+- `ALLOW_MULTIPLE_ADMINS` — `false` by default  
+- `BCRYPT_SALT_ROUNDS` — e.g. `10`  
+- `ALLOWED_ORIGINS` — comma-separated allowed origins for CORS
 
-Automatic scheduling conflict resolver
+Important frontend variables:
 
-Team-based tournaments
+- `VITE_API_URL` — base backend URL (the client app appends `/api` if needed)
+- `VITE_WS_URL` — websocket URL (if applicable)
 
-Tournament highlights dashboard
-## Images 
-<img width="1899" height="918" alt="image" src="https://github.com/user-attachments/assets/40acbcf1-8292-4203-b619-ac0a987fa59e" />
+---
 
-<img width="1902" height="925" alt="image" src="https://github.com/user-attachments/assets/32831418-d3ff-4045-8ac5-f14a857852d1" />
+## Database & migrations
 
-<img width="1919" height="923" alt="image" src="https://github.com/user-attachments/assets/a60e5b0f-f76d-4ba8-aa84-d54d17b3e64e" />
+This project uses Prisma. For local development run:
 
-<img width="1919" height="920" alt="image" src="https://github.com/user-attachments/assets/5c51a53c-9b13-4d4c-8aae-f0499e869ff6" />
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
 
-<img width="1919" height="922" alt="image" src="https://github.com/user-attachments/assets/b0cc3f3b-6453-44a0-8457-3284b7de545a" />
+To run migrations in production, use:
 
+```bash
+npx prisma migrate deploy
+```
 
-📄 License
+Prisma schema is in `backend/prisma/schema.prisma`.
 
-This project is licensed under the MIT License.
+---
 
-👤 Author
+## Minimal API overview
 
-Athmabhiram
-GitHub: athmabhiram1
+The backend exposes a REST API under the `/api` prefix. Example endpoints:
+
+- `POST /api/auth/login` — authenticate (email + password)
+- `POST /api/auth/register` — register user
+- `POST /api/auth/register-admin` — bootstrap admin (requires `ADMIN_BOOTSTRAP_CODE`)
+- `GET /api/health` — health check
+- `GET /api/tournaments` — list tournaments
+- `POST /api/events` — create event (auth required)
+
+For local manual testing use the provided REST snippets at `backend/test-api.rest` and `backend/test-auth.rest`.
+
+---
+
+## Testing & utilities
+
+- REST files for quick tests: `backend/test-api.rest`, `backend/test-auth.rest`  
+- Admin bootstrap script: `backend/scripts/bootstrap-admin.ts`  
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a branch: `git checkout -b feat/your-feature`
+3. Implement and test locally
+4. Open a PR with a clear description of changes
+
+Please follow existing code style and run tests where applicable.
+
+---
+
+## License
+
+MIT — see `LICENSE` if included
+
+---
+
+## Author
+
+Athmabhiram — https://github.com/athmabhiram1
+
