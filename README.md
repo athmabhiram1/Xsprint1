@@ -23,8 +23,9 @@ A modern full-stack tournament management platform for organizing, scheduling, a
 
 🌐 Live Deployment
 
-Frontend:
-🔗 https://xsprint1f2.vercel.app/
+**Frontend:** https://frontend-lwno2jwc1-athmabhiram-gmailcoms-projects.vercel.app  
+**Backend:** https://xsprint1-1b.onrender.com  
+**Backend Health:** https://xsprint1-1b.onrender.com/api/health
 
 🚀 Features
 
@@ -100,57 +101,42 @@ npm run dev
 
 🌐 Deployment Guide
 
-Frontend — Vercel
+### Frontend — Vercel
 1. Connect GitHub repo
-2. Add env var: `VITE_API_URL=https://<backend-domain>/api`
+2. Add environment variable:
+   ```
+   VITE_API_URL=https://xsprint1-1b.onrender.com
+   ```
 3. Deploy
 
-Backend — Render (Managed Node Environment)
-Backend — Railway (Container or Buildpack)
-1. Select repository; set root directory to `backend/`.
-2. If using buildpack: Build Command `npm install && npm run build` Start Command `npm run start:migrate`.
-3. If using Docker: create a `Dockerfile` (see commits history for example) then just deploy; Railway sets `PORT`.
-4. Add env vars from `.env.example` (ensure `DATABASE_URL`, `DIRECT_URL`, `JWT_SECRET`, `ADMIN_BOOTSTRAP_CODE`).
-5. Trigger deploy; first start applies migrations then launches server.
-6. Test: `curl https://<railway-domain>/api/health`.
+### Backend — Render (Production)
+**Current deployment:** https://xsprint1-1b.onrender.com
 
-1. Create new Web Service pointing to `backend/` directory (choose Root Directory = backend).
-2. Set Build Command:
-```
-npm install && npm run build
-```
-3. Set Start Command (runs migrations then starts API):
-```
-npx prisma migrate deploy && node dist/index.js
-```
-4. Add Environment Variables:
-```
-DATABASE_URL=<neon pooled url>
-DIRECT_URL=<neon direct url>
-JWT_SECRET=<secure long random secret>
-ADMIN_BOOTSTRAP_CODE=<admin bootstrap code>
-JWT_EXPIRES_IN=7d
-GEMINI_API_KEY=<optional>
-ALLOWED_ORIGINS=https://<frontend-domain>,https://<render-service-host>
-FRONTEND_URL=https://<frontend-domain>
-NODE_ENV=production
-PORT=10000   # Render provides PORT automatically; fallback only
-```
-5. Enable Auto-Deploy on commit.
-6. Verify health:
-```
-curl https://<render-service-host>/api/health
-```
-Should return JSON with `status: UP`.
-
-Backend — VPS (Manual)
-1. Install Node 18+ & PostgreSQL client.
-2. `npm install && npm run build`
-3. `npx prisma migrate deploy`
-4. `node dist/index.js`
-
-For full deployment & security checklist see:
-📄 `DEPLOYMENT-CHECKLIST.md`
+1. Create new Web Service pointing to `backend/` directory
+2. **Build Command:**
+   ```bash
+   cd backend && npm install && npm run build
+   ```
+3. **Start Command:**
+   ```bash
+   cd backend && npx prisma migrate deploy && node dist/index.js
+   ```
+4. **Environment Variables:** (copy from `backend/.env`)
+   ```
+   DATABASE_URL=<neon pooled connection>
+   DIRECT_URL=<neon direct connection>
+   JWT_SECRET=<your secret>
+   JWT_EXPIRES_IN=7d
+   ADMIN_BOOTSTRAP_CODE=<your code>
+   ALLOW_MULTIPLE_ADMINS=false
+   BCRYPT_SALT_ROUNDS=10
+   NODE_ENV=production
+   FRONTEND_URL=<your-frontend-url>
+   ALLOWED_ORIGINS=<your-frontend-url>,http://localhost:3000,http://localhost:3001
+   GEMINI_API_KEY=<optional>
+   ```
+5. Enable Auto-Deploy on git push
+6. Verify: `curl https://xsprint1-1b.onrender.com/api/health`
 
 🧭 Roadmap (Planned Features)
 
