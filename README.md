@@ -223,6 +223,14 @@ For local manual testing use the provided REST snippets at `backend/test-api.res
 Please follow existing code style and run tests where applicable.
 
 ---
+<img width="1919" height="920" alt="image" src="https://github.com/user-attachments/assets/e11d8191-8acd-46df-bad5-43a23c6d48a3" />
+<img width="1919" height="921" alt="image" src="https://github.com/user-attachments/assets/7162523a-ce53-442d-8166-a43f9f30d0df" />
+<img width="1917" height="919" alt="image" src="https://github.com/user-attachments/assets/9d228416-2f3a-4624-82c5-c3d9085fc0c2" />
+<img width="1919" height="923" alt="image" src="https://github.com/user-attachments/assets/0b8f11f9-55cc-484a-82ec-edac744f5615" />
+<img width="1919" height="921" alt="image" src="https://github.com/user-attachments/assets/10879121-3d6a-4dbf-b212-9eaa9cc8363b" />
+
+
+
 
 ## License
 
